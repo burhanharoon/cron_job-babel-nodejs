@@ -24,15 +24,11 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 var router = _express["default"].Router();
+/* GET users listing. */
 
-var config = {
-  headers: {
-    Authorization: "Bearer S.1__8dc6b9dee7187093baff5c555e8e681088c4864"
-  }
-};
 
-var scheduledTask = /*#__PURE__*/function () {
-  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+router.get("/", /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res, next) {
     var queryParentId, data, parent_id, queryTitle, payloadData;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -85,7 +81,9 @@ var scheduledTask = /*#__PURE__*/function () {
             //   config
             // );
 
-            return _context.abrupt("return", payloadData);
+            res.json({
+              data: payloadData
+            });
 
           case 11:
           case "end":
@@ -95,104 +93,31 @@ var scheduledTask = /*#__PURE__*/function () {
     }, _callee);
   }));
 
-  return function scheduledTask() {
-    return _ref.apply(this, arguments);
-  };
-}();
-/* GET users listing. */
-
-
-router.get("/", /*#__PURE__*/function () {
-  var _ref2 = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res, next) {
-    var queryParentId, data, parent_id, queryTitle, payloadData;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) {
-        switch (_context2.prev = _context2.next) {
-          case 0:
-            _context2.next = 2;
-            return _models.sequelize.query("SELECT start_date FROM universal_data WHERE move_status = 'Booked' AND start_date = cast(now() as date)+1 group by start_date;");
-
-          case 2:
-            queryParentId = _context2.sent;
-            data = {
-              name: queryParentId[1].rows[0].start_date,
-              short_code: "",
-              billable: "no",
-              assigned_to_all: "yes",
-              billable_rate: ""
-            }; // const jobcodesApiData = await axios.post(
-            //   " https://rest.tsheets.com/api/v1/jobcodes",
-            //   {
-            //     data,
-            //   },
-            //   config
-            // );
-            // const parent_id = jobcodesApiData?.results?.jobcodes?.id || 00;
-
-            parent_id = 10; // SELECT title FROM Inventory_App.universal_data WHERE move_status = Booked and start_date = CURDATE() + 1;
-
-            _context2.next = 7;
-            return _models.sequelize.query("SELECT title FROM universal_data WHERE move_status = 'Booked' and start_date = cast(now() as date)+1;");
-
-          case 7:
-            queryTitle = _context2.sent;
-            payloadData = [];
-            queryTitle[1].rows.forEach(function (row) {
-              var temp = {
-                name: row.title,
-                //here please use title from query result above
-                parent_id: parent_id,
-                short_code: "",
-                billable: "no",
-                assigned_to_all: "yes",
-                billable_rate: ""
-              };
-              payloadData.push(temp);
-            }); // const apiData = await axios.post(
-            //   " https://rest.tsheets.com/api/v1/jobcodes",
-            //   {
-            //     data: payloadData,
-            //   },
-            //   config
-            // );
-
-            res.json({
-              data: payloadData
-            });
-
-          case 11:
-          case "end":
-            return _context2.stop();
-        }
-      }
-    }, _callee2);
-  }));
-
   return function (_x, _x2, _x3) {
-    return _ref2.apply(this, arguments);
+    return _ref.apply(this, arguments);
   };
 }());
 
-var job = _nodeCron["default"].schedule("0 0 5 * * *", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
-  return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+var job = _nodeCron["default"].schedule("0 0 5 * * *", /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2() {
+  return _regeneratorRuntime().wrap(function _callee2$(_context2) {
     while (1) {
-      switch (_context3.prev = _context3.next) {
+      switch (_context2.prev = _context2.next) {
         case 0:
-          _context3.t0 = console;
-          _context3.next = 3;
+          _context2.t0 = console;
+          _context2.next = 3;
           return scheduledTask();
 
         case 3:
-          _context3.t1 = _context3.sent;
+          _context2.t1 = _context2.sent;
 
-          _context3.t0.log.call(_context3.t0, _context3.t1);
+          _context2.t0.log.call(_context2.t0, _context2.t1);
 
         case 5:
         case "end":
-          return _context3.stop();
+          return _context2.stop();
       }
     }
-  }, _callee3);
+  }, _callee2);
 })), {
   timezone: "US/Eastern"
 });
