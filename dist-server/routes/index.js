@@ -14,9 +14,8 @@ var router = _express["default"].Router();
 
 
 router.get("/", function (req, res, next) {
-  res.render("index", {
-    title: "Express"
-  });
+  // res.render("index", { title: "Express" });
+  res.send("Hello World!");
 });
 var _default = router;
 exports["default"] = _default;
